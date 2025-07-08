@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>AI-Enhanced Intrusion Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-glow: #00ffcc;
+            --secondary-glow: #007bff;
+            /* Changed for solid background */
+            --glass-bg: rgba(0, 0, 0, 0.7);
+            --input-bg: #1a1a1a;
+            --border-color: #00ffcc;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            /* --- CHANGED BACKGROUND HERE (SOLID COLOR) --- */
+            background-color: #0A192F; /* A dark, deep space blue */
+            /* ------------------------------------------- */
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background grid/dots effect (adjust opacity if needed for solid color) */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle, var(--primary-glow) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0,255,204,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,255,204,0.05) 1px, transparent 1px);
+            background-size: 30px 30px, 30px 30px, 30px 30px;
+            opacity: 0.15; /* Slightly increased opacity for better visibility on solid background */
+            z-index: 0;
+            animation: backgroundPan 60s linear infinite;
+        }
+
+        @keyframes backgroundPan {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 100% 100%;
+            }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border-radius: 25px;
+            padding: 45px 35px;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.4), inset 0 0 15px rgba(0, 255, 204, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            width: 100%;
+            max-width: 520px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .glass-card h2 {
+            text-align: center;
+            color: var(--primary-glow);
+            margin-bottom: 35px;
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .form-label {
+            color: var(--primary-glow);
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            background-color: var(--input-bg);
+            color: var(--primary-glow);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: #0d0d0d;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px var(--primary-glow), inset 0 0 5px var(--primary-glow);
+            color: var(--primary-glow);
+        }
+
+        .btn-glow {
+            background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
+            color: #000;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+
+        .btn-glow:hover {
+            background: linear-gradient(to right, #00cc99, #0066cc);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .prediction-box {
+            margin-top: 30px;
+            padding: 20px 25px;
+            border-radius: 15px;
+            background-color: var(--glass-bg);
+            text-align: center;
+            box-shadow: 0 0 15px var(--primary-glow), inset 0 0 8px rgba(0, 255, 204, 0.2);
+            animation: pulseGlow 2s infinite alternate;
+            border: 1px solid rgba(0, 255, 204, 0.4);
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 15px var(--primary-glow), inset 0 0 8px rgba(0, 255, 204, 0.2);
+            }
+            100% {
+                box-shadow: 0 0 30px #00cc99, inset 0 0 15px rgba(0, 204, 153, 0.3);
+            }
+        }
+
+        .prediction-box h4 {
+            color: var(--primary-glow);
+            font-size: 1.6rem;
+            margin: 0;
+            text-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .glass-card {
+                padding: 30px 20px;
+                max-width: 90%;
+            }
+            .glass-card h2 {
+                font-size: 1.8rem;
+                margin-bottom: 25px;
+            }
+            .form-control, .btn-glow {
+                font-size: 0.95rem;
+                padding: 10px 15px;
+            }
+            .prediction-box h4 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <h2>AI Intrusion Detector</h2>
+        <form action="/predict" method="POST">
+            <div class="mb-3">
+                <label class="form-label" for="flow_duration">Flow Duration</label>
+                <input type="number" step="any" class="form-control" name="flow_duration" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="total_fwd_packets">Total Fwd Packets</label>
+                <input type="number" step="any" class="form-control" name="total_fwd_packets" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="total_backward_packets">Total Backward Packets</label>
+                <input type="number" step="any" class="form-control" name="total_backward_packets" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label" for="total_length_fwd_packets">Total Length of Fwd Packets</label>
+                <input type="number" step="any" class="form-control" name="total_length_fwd_packets" required>
+            </div>
+            <button type="submit" class="btn btn-glow">🚨 Run Prediction</button>
+        </form>
+
+        {% if prediction %}
+        <div class="prediction-box">
+            <h4>Prediction: {{ prediction }}</h4>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
